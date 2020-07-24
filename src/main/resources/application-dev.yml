@@ -1,0 +1,44 @@
+#应用端口
+server:
+  port: 8080
+#执行器Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  server:
+    port: 8081
+#日志打印
+logging:
+  config: classpath:logback.xml
+#spring
+spring:
+  #数据库
+  datasource:
+      url: jdbc:h2:mem:testClass
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+      platform: h2
+      #schema: classpath:/db/schema.sql
+      data: classpath:/db/data.sql
+  #更新ddl语句，打印sql
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  #在浏览器开启控制台
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  #proxy-target-class属性值决定是基于接口的还是基于类的代理被创建。
+  #true，那么基于类的代理将起作用（这时需要cglib库）。false或者这个属性被省略，那么标准的JDK 基于接口的代理。
+  aop:
+    proxy-target-class: true
+
+
