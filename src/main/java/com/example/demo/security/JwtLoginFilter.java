@@ -9,6 +9,7 @@ import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -72,18 +73,17 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication( HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        String phoneNo = request.getParameter("phoneNo");
+        String nickname = request.getParameter("nickname");
         String password = request.getParameter("password");
-        if (StringUtils.isEmpty(phoneNo)) {
-            logger.error("手机号为空");
-            throw new InternalAuthenticationServiceException("手机号不能为空！");
+        if (StringUtils.isEmpty(nickname)) {
+            logger.error("用户名");
+            throw new InternalAuthenticationServiceException("用户名不能为空！");
         }
         if (StringUtils.isEmpty(password)) {
             logger.info("登录密码有为空");
             throw new InternalAuthenticationServiceException("登录密码不能为空！");
         }
-        User user = new User();
-        user = userService.getUserByCellPhoneNo(phoneNo);
+        User user = userService.getUserByNickname(nickname);
 
         if (user==null) {
             logger.info("用户未注册");
@@ -94,7 +94,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
             throw new InternalAuthenticationServiceException(LOGIN_FAILED);
         }
 
-        if (userService.loginByCellphoneNoAndPassword(phoneNo, password)) {
+        if (userService.loginByCellphoneNoAndPassword(user.getCellPhoneNo(), password)) {
             return new UsernamePasswordAuthenticationToken(user.getId(), "", new ArrayList<>());
         }
 
@@ -112,13 +112,9 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void unsuccessfulAuthentication( HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
 
-        String message = failed.getMessage();
         response.setHeader("Content-type", "text/json;charset=UTF-8");
-        String phoneNo = request.getParameter("phoneNo");
-        User user = new User();
-        user = userService.getUserByCellPhoneNo(phoneNo);
-        logger.info("手机号为:"+phoneNo+"的用户登录失败");
-        logger.info("没有登录认证成功");
+        String nickname = request.getParameter("nickname");
+        logger.info("用户名为:"+nickname+"的用户登录失败");
         response.sendError(HttpStatus.UNAUTHORIZED.value(),"没有登录认证成功");
         ResultDTO resultDTO = ResultDTO.error(new CodeMsg(-1,"密码错误，登录失败"));
         String json = mapper.writeValueAsString(resultDTO);

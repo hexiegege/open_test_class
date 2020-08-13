@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * @author Dion
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 

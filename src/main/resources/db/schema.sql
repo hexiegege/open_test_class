@@ -10,5 +10,6 @@ create table USER (
   memo varchar(255)  NULL DEFAULT NULL,
   nickname varchar(10)  NULL DEFAULT NULL,
   password varchar(100)  NULL DEFAULT NULL,
-  significance_tag bit(1) NOT NULL);
+  significance_tag bit(1) NOT NULL
+);
 

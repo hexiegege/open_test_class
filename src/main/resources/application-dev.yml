@@ -16,13 +16,13 @@ logging:
 spring:
   #数据库
   datasource:
-      url: jdbc:h2:mem:testClass
+      url: jdbc:h2:~/testClass;AUTO_SERVER=TRUE
       username: sa
       password:
       driver-class-name: org.h2.Driver
       platform: h2
       #schema: classpath:/db/schema.sql
-      data: classpath:/db/data.sql
+      #data: classpath:/db/data.sql
   #更新ddl语句，打印sql
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
@@ -40,5 +40,12 @@ spring:
   #true，那么基于类的代理将起作用（这时需要cglib库）。false或者这个属性被省略，那么标准的JDK 基于接口的代理。
   aop:
     proxy-target-class: true
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+    #页面不加载缓存，修改即时生效
+    freemarker:
+      cache: false
 
 

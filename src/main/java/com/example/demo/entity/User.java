@@ -11,17 +11,16 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 用户类
  * @author shanfa
  */
-@Getter
-@Setter
 @Entity
-@EqualsAndHashCode
-public class User {
+@Data
+public class User implements Serializable {
     /**
      * 用户Id
      * JPA 自动生成
@@ -82,7 +81,6 @@ public class User {
      * 创建用户时间
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
     private Date createdTime;
     /**
      * 最后登录时间

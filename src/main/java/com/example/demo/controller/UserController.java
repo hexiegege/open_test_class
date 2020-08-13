@@ -25,7 +25,7 @@ import java.util.Date;
  * @author shanfa
  */
 @Slf4j
-@Api(value = "用户Controller",description = "用户接口")
+@Api(value = "用户Controller",tags = "用户接口")
 @RestController
 @RequestMapping("/users")
 //@PreAuthorize("isAuthenticated()")

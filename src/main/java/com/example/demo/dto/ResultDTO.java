@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @ToString
 public class ResultDTO<T> implements Serializable {
-    private int code;
+    private Integer code;
 
     private String msg;
 
@@ -24,6 +24,12 @@ public class ResultDTO<T> implements Serializable {
     public ResultDTO(){
         this.code = 0;
         this.msg = "success";
+        this.data = null;
+    }
+
+    public ResultDTO(String msg){
+        this.code = 0;
+        this.msg = msg;
         this.data = null;
     }
 
@@ -61,6 +67,10 @@ public class ResultDTO<T> implements Serializable {
 
     public static <T> ResultDTO<T> success(){
         return new ResultDTO<T>();
+    }
+
+    public static <T> ResultDTO<T> success(String msg){
+        return new ResultDTO<T>(msg);
     }
 
     public static <T> ResultDTO<T> success(T data){ return new ResultDTO<T>(data); }

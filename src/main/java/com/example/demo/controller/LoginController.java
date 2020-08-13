@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @Desc
  */
 @RestController
-@Api(value = "登录接口",description = "获取登录授权")
+@Api(value = "登录接口",tags = "获取登录授权")
 public class LoginController {
 
     @PostMapping("/login")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "phoneNo",value ="手机号"),
+            @ApiImplicitParam(name = "nickname",value ="用户名"),
             @ApiImplicitParam(name = "password",value ="密码"),
     })
-    ResponseEntity<Object> login( @RequestParam("phoneNo")String phoneNo, @RequestParam("password")String password){
+    ResponseEntity<Object> login( @RequestParam("nickname")String nickname, @RequestParam("password")String password){
         return ResponseEntity.ok().build();
      }
 }

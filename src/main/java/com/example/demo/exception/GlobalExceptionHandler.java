@@ -2,6 +2,7 @@ package com.example.demo.exception;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,17 +21,29 @@ import javax.servlet.http.HttpServletRequest;
 @ResponseBody
 public class GlobalExceptionHandler {
 
-
     /**
      * 处理其他异常
      * @param req
      * @param e
      * @return
      */
-    @ExceptionHandler(value =Exception.class)
-    public ResultDTO exceptionHandler( HttpServletRequest req, Exception e){
-        log.error("未知异常！原因是: {}",e.toString());
-        return ResultDTO.error(CodeMsg.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResultDTO accessDeniedExceptionHandler(HttpServletRequest req, AccessDeniedException e){
+        log.error(CodeMsg.FORBIDDEN.getMsg()+ " "+e.toString());
+        return ResultDTO.error(CodeMsg.FORBIDDEN);
+    }
+
+
+    /**
+     * 处理空指针的异常
+     * @param req
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value =NullPointerException.class)
+    public ResultDTO exceptionHandler( HttpServletRequest req, NullPointerException e){
+        log.error("发生空指针异常！原因是: {}",e.toString());
+        return ResultDTO.error(CodeMsg.NULL_POINT);
     }
 
     /**
@@ -46,30 +59,15 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 处理空指针的异常
+     * 处理其他异常
      * @param req
      * @param e
      * @return
      */
-    @ExceptionHandler(value =NullPointerException.class)
-    public ResultDTO exceptionHandler( HttpServletRequest req, NullPointerException e){
-        log.error("发生空指针异常！原因是: {}",e.toString());
-        return ResultDTO.error(CodeMsg.NULL_POINT);
+    @ExceptionHandler(value = Exception.class)
+    public ResultDTO exceptionHandler( HttpServletRequest req, Exception e){
+        log.error("未知异常！原因是: {}",e.toString());
+        return ResultDTO.error(CodeMsg.INTERNAL_SERVER_ERROR);
     }
-
-    /**
-     * 处理权限异常
-     * @param req
-     * @param e
-     * @return
-     */
-//    @ExceptionHandler(value =AccessDeniedException.class)
-//    public ResultDTO exceptionHandler( HttpServletRequest req, AccessDeniedException e){
-//        log.error("发生未知异常！原因是: {}",e.toString());
-//        return ResultDTO.error(CodeMsg.FORBIDDEN);
-//    }
-
-
-
 
 }
